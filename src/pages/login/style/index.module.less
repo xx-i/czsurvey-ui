@@ -1,0 +1,136 @@
+.container {
+  padding: 48px 16px 0 16px;
+  height: 100vh;
+  position: relative;
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url('../assets/bg-login.jpg');
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.2);
+  }
+}
+
+.login-form {
+  width: 360px;
+  margin: -230px auto auto;
+  padding: 16px 28px;
+  position: absolute;
+  top: 50%;
+  right: 15%;
+  max-width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  z-index: 2;
+  background: #fff;
+
+  h4 {
+    padding: 22px 0;
+    text-align: center;
+  }
+
+  :global {
+    .arco-tabs-header-nav {
+      &::before {
+        background-color: transparent;
+      }
+    }
+    .arco-tabs-header-ink {
+      height: 5px;
+      border-radius: 2px;
+    }
+  }
+
+  input {
+    transition: color 0.1s cubic-bezier(0, 0, 1, 1), border-color 0.1s cubic-bezier(0, 0, 1, 1), background-color 0.1s cubic-bezier(0, 0, 1, 1), box-shadow 0.1s cubic-bezier(0, 0, 1, 1);
+  }
+
+  input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px var(--color-fill-2) inset !important;
+  }
+
+  :global {
+    .arco-input-inner-wrapper:hover {
+      input:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px var(--color-fill-3) inset !important;
+      }
+    }
+    .arco-input-inner-wrapper input:focus:-webkit-autofill {
+      -webkit-box-shadow:0 0 0 1000px white inset !important;
+    }
+  }
+}
+
+.wx-login {
+
+  .mod-text {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #666;
+  }
+
+  .qrcode {
+    width: 160px;
+    height: 160px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .qrcode-modal {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    cursor: pointer;
+
+    .refresh-icon {
+      display: block;
+      margin: 0 auto 12px;
+      color: #fff;
+      font-size: 30px;
+    }
+
+    span {
+      display: block;
+      text-align: center;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    a {
+      font-weight: 700;
+      color: #73c4f1;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.login-tips-title {
+  color: #555;
+  font-size: 14px;
+  padding: 5px 0 10px;
+}
+
+.login-tips-text {
+  font-size: 12px;
+  line-height: 22px;
+  color: #555;
+  margin-bottom: 5px;
+}

@@ -1,0 +1,113 @@
+.side-bar {
+  width: 240px;
+  height: calc(100vh - 65px);
+  padding-top: 20px;
+  box-sizing: border-box;
+  position: relative;
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 5%);
+  z-index: 5;
+
+  :global(.arco-menu-collapse) {
+    width: 72px;
+  }
+
+  :global(.arco-layout-sider-children) {
+    overflow-x: hidden;
+  }
+
+  :global {
+    .arco-menu-vertical .arco-menu-item {
+      padding: 0 22px;
+    }
+
+    .arco-menu-vertical .arco-menu-pop-header {
+      padding: 0 22px;
+    }
+
+    .arco-menu-vertical .arco-menu-inline-header {
+      padding: 0 22px;
+    }
+
+    .arco-menu-light .arco-menu-item,
+    .arco-menu-light .arco-menu-group-title,
+    .arco-menu-light .arco-menu-pop-header,
+    .arco-menu-light .arco-menu-inline-header {
+      color: #333333;
+    }
+
+    .arco-menu-vertical .arco-icon {
+      color: #333333;
+    }
+
+    .arco-menu-light .arco-menu-item.arco-menu-selected,
+    .arco-menu-light .arco-menu-group-title.arco-menu-selected,
+    .arco-menu-light .arco-menu-pop-header.arco-menu-selected,
+    .arco-menu-light .arco-menu-inline-header.arco-menu-selected {
+      color: rgb(var(--primary-6));
+    }
+  }
+
+  :global(.arco-menu-vertical.arco-menu) {
+    margin-top: -4px;
+  }
+}
+
+.collapse-btn {
+  position: absolute;
+  background-color: #fff !important;
+  width: 16px !important;
+  line-height: 40px;
+  height: 40px !important;
+  right: -5px;
+  box-sizing: border-box;
+  z-index: 5;
+}
+
+.create-btn {
+  height: 40px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  margin-bottom: 20px;
+
+  :global(button) {
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    padding: 0 13px;
+  }
+
+  .create-text {
+    margin-right: 4px;
+  }
+}
+
+.btn-menu {
+  width: 208px;
+  :global(.arco-icon) {
+    margin-right: 8px;
+    font-size: 16px;
+    transform: translateY(-1px);
+  }
+}
+
+.layout-content {
+  background: #f9f9f9;
+  position: relative;
+  z-index: 1;
+}
+
+.side-menu {
+  width: 240px;
+
+  :global {
+    .arco-menu-item > .arco-icon,
+    .arco-sub-menu span:first-child .arco-icon,
+    .arco-menu-pop.arco-sub-menu .arco-icon {
+      font-size: 20px;
+      vertical-align: -5px;
+    }
+  }
+}

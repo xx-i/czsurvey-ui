@@ -1,13 +1,14 @@
 import QuesContentCard from "@/pages/editor/form-design/designer/QuesContentCard";
+import styles from '../style/formItem.module.less'
 
-function InputItem() {
+function Input({id}) {
   return (
-    <QuesContentCard>
+    <QuesContentCard id={id} tag="单行文本">
       <QuesContentCard.ContentSlot>
-        1232
+        <input className={styles['input-item']} type="text" placeholder="请输入" readOnly />
       </QuesContentCard.ContentSlot>
     </QuesContentCard>
   );
 }
 
-export default InputItem;
+export default Input;

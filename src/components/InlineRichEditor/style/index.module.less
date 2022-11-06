@@ -1,0 +1,85 @@
+.editor-wrapper {
+  .editor-container {
+    position: relative;
+    cursor: text;
+    box-sizing: border-box;
+    padding: 5px 8px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+
+    &:hover {
+      border: 1px dashed #2378ff;
+    }
+
+    .editor-toolbar {
+      position: absolute;
+      height: 36px;
+      box-shadow: 0 4px 16px rgb(0 0 0 / 8%);
+      background-color: #ffffff;
+      top: -45px;
+      left: 0;
+      border-radius: 3px;
+      padding: 0 12px;
+    }
+  }
+
+  &.focus {
+    .editor-container {
+      border: 1px solid #2378ff;
+    }
+  }
+}
+
+
+
+
+/* -----------------  editor toolbar 样式  --------------------- */
+.buttonWrapper {
+  display: inline-block;
+}
+
+.button {
+  background: #fff;
+  color: #ddd;
+  font-size: 14px;
+  border: 0;
+  height: 28px;
+  width: 28px;
+  padding: 0;
+  line-height: 28px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button svg {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
+  fill: #333;
+}
+
+.button:hover, .button:focus {
+  outline: 0; /* reset for :focus */
+  svg {
+    fill: #6a9cc9;
+  }
+}
+
+.active {
+  color: #6a9cc9;
+}
+
+.active svg {
+  fill: #6a9cc9;
+}
+
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  background: #fff;
+  box-sizing: border-box;
+}

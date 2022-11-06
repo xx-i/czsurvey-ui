@@ -1,0 +1,114 @@
+.project-card {
+  width: 260px;
+  height: 206px;
+  position: relative;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease, -webkit-box-shadow 0.3s ease;
+  cursor: pointer;
+
+  .project-cover {
+    height: 122px;
+    width: 100%;
+    position: relative;
+    background-image: url("../assets/cover-bg.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    .project-status {
+      position: absolute;
+      left: 8px;
+      top: 8px;
+      border: 1px solid #1ED261;
+      color: #1ED261;
+      border-radius: 4px;
+      font-size: 12px;
+      padding: 0 6px;
+      background-color: #F4FDF7;
+    }
+  }
+
+  .project-name {
+    padding: 8px 16px 8px;
+    height: 26px;
+
+    span {
+      max-width: 100%;
+      display: inline-block;
+      font-weight: 500;
+      color: #000000;
+      font-size: 16px;
+      line-height: 26px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .project-info {
+    padding: 0 16px;
+
+    .project-statistics {
+      color: #999;
+      display: flex;
+      justify-content: space-between;
+      transition: opacity 0.3s, transform 0.3s ease;
+
+      span {
+        text-overflow: ellipsis;
+        max-width: 50%;
+        white-space:nowrap;
+        overflow:hidden;
+      }
+
+      .stat-time {
+        background: #F6F6F6;
+        padding: 0 6px;
+        border-radius: 2px;
+        font-size: 12px;
+        line-height: 21px;
+      }
+
+    }
+
+    .project-operation {
+      opacity: 0;
+      //display: flex;
+      //justify-content: space-between;
+      width: 100%;
+      transition: opacity 0.3s, transform 0.3s ease;
+
+      a {
+        padding: 0;
+        color: #333;
+        line-height: 21px;
+        background-color: transparent;
+        vertical-align: middle;
+
+        &:hover {
+          color: rgb(var(--link-6));
+        }
+      }
+
+      :global(.arco-icon) {
+        font-size: 16px;
+        vertical-align: -3px
+      }
+    }
+  }
+
+  &:hover {
+    .project-statistics {
+      opacity: 0;
+      transform: translateY(-21px);
+    }
+
+    .project-operation {
+      opacity: 1;
+      transform: translateY(-21px);
+    }
+  }
+}

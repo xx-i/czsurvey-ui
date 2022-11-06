@@ -1,44 +1,36 @@
-import style from './style/index.module.less'
+import { useState } from "react";
 import { IconShake } from "@arco-design/web-react/icon";
+import SideNav from "@/components/SideNav";
+import QuesTypeTab from "@/pages/editor/form-design/QuesTypeTab";
+import { Outlet } from "react-router-dom";
+import FdContextProvider from "@/pages/editor/form-design/FdContextProvider";
+import styles from './style/index.module.less'
 
 function Editor() {
+  const [collapse, setCollapse] = useState(false);
+
   return (
-    <div>
-      <div className={style['side-nav']}>
-        <div className={style['menu-container']}>
-          <div className={style['menu-item']}>
-            <IconShake />
-            <div className={style['menu-text']}>问卷</div>
-          </div>
-          <div className={style['menu-item']}>
-            <IconShake />
-            <div className={style['menu-text']}>问卷</div>
-          </div>
-          <div className={style['menu-item']}>
-            <IconShake />
-            <div className={style['menu-text']}>问卷</div>
-          </div>
-          <div className={style['menu-item']}>
-            <IconShake />
-            <div className={style['menu-text']}>问卷</div>
-          </div>
-          <div className={style['menu-item']}>
-            <IconShake />
-            <div className={style['menu-text']}>问卷</div>
-          </div>
+    <div className={styles['designer-container']}>
+      <FdContextProvider>
+        <SideNav collapse={collapse} setCollapse={setCollapse}>
+          <SideNav.Menu activable uniqueKey={"key1"} icon={<IconShake/>} label="大纲"/>
+          <SideNav.Menu activable uniqueKey={"key2"} icon={<IconShake/>} label="题型"/>
+          <SideNav.Menu icon={<IconShake/>} label="题库"/>
+          <SideNav.Menu icon={<IconShake/>} label="逻辑"/>
+          <SideNav.Menu icon={<IconShake/>} label="设置"/>
+          <SideNav.Menu icon={<IconShake/>} position="bottom"/>
+          <SideNav.Menu icon={<IconShake/>} position="bottom" onClick={() => setCollapse(!collapse)}/>
+          <SideNav.Tab matchKey={"key1"}>
+            <div style={{height: '2000px'}}>123123</div>
+          </SideNav.Tab>
+          <SideNav.Tab matchKey={"key2"}>
+            <QuesTypeTab/>
+          </SideNav.Tab>
+        </SideNav>
+        <div style={{height: '2000px'}}>
+          {<Outlet/>}
         </div>
-        <div className={style['bottom-menu-container']}>
-          <div className={style['menu-item']}>
-            <IconShake />
-          </div>
-          <div className={style['menu-item']}>
-            <IconShake />
-          </div>
-        </div>
-      </div>
-      <div style={{height: '2000px'}}>
-          
-      </div>
+      </FdContextProvider>
     </div>
   );
 }

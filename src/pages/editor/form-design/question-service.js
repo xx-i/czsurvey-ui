@@ -1,4 +1,5 @@
 import { IconCodeSquare, IconSettings } from "@arco-design/web-react/icon";
+import { Map } from "immutable";
 
 export const questionTypes = [
   {
@@ -76,3 +77,28 @@ export const questionTypes = [
     ]
   }
 ];
+
+export function crateDefaultQuestion(type, questionKey) {
+  const common = {
+    questionKey,
+    title: '请输入题目标题',
+    description: null,
+    type,
+    required: true,
+  };
+  let additionalInfo = null;
+  switch (type) {
+    case 'INPUT': {
+      additionalInfo = {inputType: null, maxLength: null};
+      break;
+    }
+    case 'TEXTAREA': {
+      additionalInfo = {maxLength: null, minLength: null};
+      break;
+    }
+    default: {
+      throw new Error(`类型${type}不存在`);
+    }
+  }
+  return Map({...common, additionalInfo});
+}
