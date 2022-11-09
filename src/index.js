@@ -9,6 +9,7 @@ import { authenticated, useAuth } from "@/utils/auth";
 import PageLayout from "@/pages/layout";
 import { injectLogoutHandler } from "@/utils/request";
 
+import "./style/index.css"
 import MyProject from "@/pages/project/mine";
 import EditorLayout from "@/pages/editor/layout";
 import Editor from "@/pages/editor/form-design";

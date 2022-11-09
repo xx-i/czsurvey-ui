@@ -30,7 +30,7 @@ function QuesContentCard({id, tag, children}) {
     transition,
   } = useSortable({id, data: {type: 'question'}});
 
-  const {activeQuestionKey, setActiveQuestionKey} = useContext(FdContext);
+  const {activeQuestionKey, setActiveQuestionKey, getSerialByKey} = useContext(FdContext);
 
   const transformStyle = CSS.Transform.toString(transform);
 
@@ -38,6 +38,20 @@ function QuesContentCard({id, tag, children}) {
     transform: isDragging ? `${transformStyle} scale(1.01)` : transformStyle,
     transition,
   };
+
+  const SerialNum = ({num}) => (
+    <div
+      style={{
+        lineHeight: '28px',
+        fontSize: '18px',
+        fontWeight: '700',
+        height: '28px',
+        marginRight: '10px'
+      }}
+    >
+      {num}
+    </div>
+  );
 
   return (
     <div
@@ -62,7 +76,7 @@ function QuesContentCard({id, tag, children}) {
         <div className={styles['card-content-wrapper']}>
           <div className={styles['card-content']}>
             <div>
-              <InlineRichEditor className={styles['ques-title']} defaultText="请输入标题"/>
+              <InlineRichEditor className={styles['ques-title']} editorPrefix={<SerialNum num={getSerialByKey(id)}/>} defaultText="请输入题目标题"/>
             </div>
             <div className={styles['ques-desc']}>
               <InlineRichEditor className={styles['ques-desc']} defaultText="请输入题目标题（选填）"/>

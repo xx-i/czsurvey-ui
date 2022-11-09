@@ -1,0 +1,123 @@
+.pagination {
+  display: flex;
+  width: fit-content;
+  background-color: #fff;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 8%);
+  padding: 0 4px;
+  height: 40px;
+  box-sizing: border-box;
+  border-radius: 6px;
+
+  button {
+    cursor: pointer;
+  }
+
+  .page-turner {
+    button {
+      height: 40px;
+      box-sizing: border-box;
+      font-size: 16px;
+      padding: 0 4px;
+      :global {
+        .arco-icon {
+          vertical-align: -3px;
+        }
+      }
+    }
+  }
+
+  .pre-btn {
+    margin-right: 16px;
+  }
+
+  .page-button {
+    padding-left: 4px;
+    button {
+      height: 40px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+
+    &:hover {
+      .page-num-btn {
+        color: #2378ff;
+      }
+    }
+
+    .page-num-btn {
+      position: relative;
+    }
+
+    .more-btn {
+      opacity: 0;
+      font-size: 16px;
+      margin-left: 4px;
+      :global {
+        .arco-icon {
+          vertical-align: -3px;
+        }
+      }
+      &:hover {
+        color: #2378ff;
+      }
+    }
+
+    &:hover {
+      .more-btn {
+        opacity: 1;
+      }
+    }
+  }
+
+  .collapse-page-btn {
+    height: 40px;
+    margin-right: 16px;
+    &:hover {
+      color: #2378ff;
+    }
+  }
+
+  .page-button.active {
+    .page-num-btn {
+      color: #2378ff;
+      &:after {
+        position: absolute;
+        content: '';
+        display: block;
+        bottom: 0;
+        left: -2px;
+        width: calc(100% + 4px);
+        height: 2px;
+        background: #2378ff;
+      }
+    }
+  }
+}
+
+.page-pop {
+  border-radius: 6px;
+  :global {
+    .arco-popover-content {
+      padding: 0;
+    }
+  }
+}
+
+.collapse-page-menu {
+  :global {
+    .arco-menu-item {
+      padding: 0 6px;
+      line-height: 28px;
+    }
+  }
+}
+
+.scroll-bar-track {
+  width: 3px !important;
+  right: 0 !important;
+  background: transparent !important;
+}
+
+.scroll-bar-thumb {
+  background: rgba(0, 0, 0, 0.2) !important;
+}

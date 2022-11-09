@@ -20,32 +20,47 @@ import {
   CodeBlockButton,
 } from '@draft-js-plugins/buttons';
 
-const staticToolbarPlugin = createToolbarPlugin({theme: {toolbarStyles: styles, buttonStyles: styles}});
-const { Toolbar } = staticToolbarPlugin;
-const plugins = [staticToolbarPlugin];
+function InlineRichEditor({onFocus, className, editorPrefix, defaultText = ''}, ref) {
 
-function InlineRichEditor({onFocus, className, defaultText = ''}, ref) {
   const [editorState, setEditorState] = useState(() => createEditorStateWithText(defaultText));
   const [focusEditor, setFocusEditor] = useState(false);
+  const [{plugins, Toolbar}] = useState(() => {
+    const staticToolbarPlugin = createToolbarPlugin({theme: {toolbarStyles: styles, buttonStyles: styles}});
+    const { Toolbar } = staticToolbarPlugin;
+    const plugins = [staticToolbarPlugin];
+    return {
+      Toolbar,
+      plugins
+    }
+  });
+
   const editorRef = useRef();
 
   useImperativeHandle(ref, () => ({
     focus: () => editorRef.current.editor.focus()
   }));
 
+  // console.log(editorState.getCurrentContent().getPlainText())
+  // console.log(convertToRaw(editorState.getCurrentContent()))
+  // ContentState.createFromText("请输入题目标题")
+  // console.log(JSON.stringify(convertToRaw(editorState.getCurrentContent())));
+
   return (
     <div className={classNames(styles['editor-wrapper'], focusEditor && styles['focus'], className)}>
       <div className={styles['editor-container']}>
-        <Editor
-          ref={editorRef}
-          plugins={plugins}
-          editorState={editorState}
-          onChange={setEditorState}
-          onFocus={() => {
-            setFocusEditor(true);
-          }}
-          onBlur={() => setFocusEditor(false)}
-        />
+        {editorPrefix && <div className={styles['editor-prefix']}>{editorPrefix}</div>}
+        <div className={styles['editor']}>
+          <Editor
+            ref={editorRef}
+            plugins={plugins}
+            editorState={editorState}
+            onChange={setEditorState}
+            onFocus={() => {
+              setFocusEditor(true);
+            }}
+            onBlur={() => setFocusEditor(false)}
+          />
+        </div>
         {
           focusEditor &&
           <div className={styles['editor-toolbar']}>

@@ -1,6 +1,26 @@
+.pagination {
+  position: fixed;
+  left: 350px;
+  top: 144px;
+  z-index: 10;
+}
+
+.pagination-menu {
+  :global {
+
+    .arco-menu-inner {
+      padding: 4px 3px 0;
+    }
+    .arco-menu-item {
+      padding: 3px 8px;
+      line-height: 24px;
+    }
+  }
+}
+
 .designer-container {
   width: calc(100vw - 834px);
-  margin: 0 auto;
+  margin: 136px auto 160px;
   min-width: 640px;
   max-width: 1128px;
   padding: 32px 0;
@@ -125,7 +145,7 @@
   .card-content {
     padding: 0 60px 8px;
     .ques-title {
-      height: 40px;
+      line-height: 28px;
       font-size: 18px;
       margin-bottom: 12px;
     }
@@ -189,9 +209,10 @@
 
     .add-btn {
       position: absolute;
-      left: 5px;
+      //left: calc(20px - 50%);
       color: #0F6BFF;
       font-size: 18px;
+      background: transparent;
     }
 
     .top-btn {

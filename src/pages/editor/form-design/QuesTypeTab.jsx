@@ -17,15 +17,26 @@ function QuesTypeTab() {
               <div className={styles['type-tags-container']}>
                 {
                   category.typeKeys.map(typeKey => {
-                    const typeDetail = getQuesTypeByKey(typeKey);
+                    const isDraggingTag = typeKey.startsWith('DRAGGING_');
+                    const typeDetail = getQuesTypeByKey(isDraggingTag ? typeKey.replace('DRAGGING_', '') : typeKey);
                     return (
-                      <QuesTabTagItem
-                        key={typeDetail.key}
-                        id={typeDetail.key}
-                        icon={typeDetail.icon}
-                        label={typeDetail.label}
-                        onClick={() => createQuestion(typeDetail.key)}
-                      />
+                      isDraggingTag ?
+                        (
+                          <QuestionTabTag
+                            key={typeKey}
+                            icon={typeDetail.icon}
+                            label={typeDetail.label}
+                          />
+                        ) :
+                        (
+                          <QuesTabTagItem
+                            key={typeDetail.key}
+                            id={typeDetail.key}
+                            icon={typeDetail.icon}
+                            label={typeDetail.label}
+                            onClick={() => createQuestion(typeDetail.key)}
+                          />
+                        )
                     );
                   })
                 }

@@ -5,6 +5,7 @@ import QuesTypeTab from "@/pages/editor/form-design/QuesTypeTab";
 import { Outlet } from "react-router-dom";
 import FdContextProvider from "@/pages/editor/form-design/FdContextProvider";
 import styles from './style/index.module.less'
+import OutlineTab from "@/pages/editor/form-design/OutlineTab";
 
 function Editor() {
   const [collapse, setCollapse] = useState(false);
@@ -21,13 +22,13 @@ function Editor() {
           <SideNav.Menu icon={<IconShake/>} position="bottom"/>
           <SideNav.Menu icon={<IconShake/>} position="bottom" onClick={() => setCollapse(!collapse)}/>
           <SideNav.Tab matchKey={"key1"}>
-            <div style={{height: '2000px'}}>123123</div>
+            <OutlineTab/>
           </SideNav.Tab>
           <SideNav.Tab matchKey={"key2"}>
             <QuesTypeTab/>
           </SideNav.Tab>
         </SideNav>
-        <div style={{height: '2000px'}}>
+        <div>
           {<Outlet/>}
         </div>
       </FdContextProvider>

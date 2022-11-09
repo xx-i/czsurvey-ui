@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import styles from "./style/index.module.less";
 import classNames from "classnames";
-import { Scrollbars } from "react-custom-scrollbars";
+import { Scrollbar } from 'react-scrollbars-custom';
 
 const SideNavContext = createContext(null);
 
@@ -42,14 +42,25 @@ function SideNav({defaultActiveTab, collapse = true, setCollapse, children}) {
         {
           !collapse && activeTab && (
             <div className={styles['nav-tab-container']}>
-              <Scrollbars
+              <Scrollbar
                 style={{height: "100%", width: "100%"}}
-                renderTrackVertical={props => <div {...props} className={styles['track-vertical']}/>}
+                trackYProps={{
+                  renderer: (props) => {
+                    const { elementRef, ...restProps } = props;
+                    return <span {...restProps} ref={elementRef} className={styles['scroll-bar-track']} />;
+                  },
+                }}
+                thumbYProps={{
+                  renderer: (props) => {
+                    const { elementRef, ...restProps } = props;
+                    return <div {...restProps} ref={elementRef} className={styles['scroll-bar-thumb']} />;
+                  },
+                }}
               >
                 <div className={styles['nav-tab']}>
                   {activeTab}
                 </div>
-              </Scrollbars>
+              </Scrollbar>
             </div>
           )
         }

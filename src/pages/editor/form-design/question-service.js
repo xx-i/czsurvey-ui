@@ -1,5 +1,6 @@
 import { IconCodeSquare, IconSettings } from "@arco-design/web-react/icon";
 import { Map } from "immutable";
+import { ContentState, convertFromRaw, convertToRaw } from "draft-js";
 
 export const questionTypes = [
   {
@@ -78,10 +79,17 @@ export const questionTypes = [
   }
 ];
 
+function convertQuesDataToDetail(question) {
+  const extra = {
+    titleText: convertFromRaw(question.title).getPlainText()
+  };
+  return Map({...question, extra});
+}
+
 export function crateDefaultQuestion(type, questionKey) {
   const common = {
     questionKey,
-    title: '请输入题目标题',
+    title: convertToRaw(ContentState.createFromText('请输入题目标题')),
     description: null,
     type,
     required: true,
@@ -100,5 +108,5 @@ export function crateDefaultQuestion(type, questionKey) {
       throw new Error(`类型${type}不存在`);
     }
   }
-  return Map({...common, additionalInfo});
+  return convertQuesDataToDetail({...common, additionalInfo});
 }

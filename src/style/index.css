@@ -1,0 +1,9 @@
+body {
+  font-family: 'PingFang SC', tahoma, arial, 'helvetica neue', 'hiragino sans gb', 'microsoft yahei', sans-serif;
+}
+
+button {
+  border: none;
+  background: transparent;
+  padding: 0;
+}

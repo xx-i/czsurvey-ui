@@ -13,7 +13,7 @@ import logo from "./assets/logo.png"
 import { useAuth } from "@/utils/auth";
 import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
-import { Scrollbars } from 'react-custom-scrollbars';
+import { Scrollbar } from 'react-scrollbars-custom';
 
 const iconStyle = {
   marginRight: 8,
@@ -85,11 +85,25 @@ function EditorLayout() {
         </div>
       </div>
       <div className={styles['editor-main']}>
-        <Scrollbars style={{height: "100%", width: "100%"}}>
+        <Scrollbar
+          style={{height: "100%", width: "100%"}}
+          trackYProps={{
+            renderer: (props) => {
+              const { elementRef, ...restProps } = props;
+              return <span {...restProps} ref={elementRef} className={styles['scroll-bar-track']} />;
+            },
+          }}
+          thumbYProps={{
+            renderer: (props) => {
+              const { elementRef, ...restProps } = props;
+              return <div {...restProps} ref={elementRef} className={styles['scroll-bar-thumb']} />;
+            },
+          }}
+        >
           <div className={styles['editor-main-container']}>
             <Outlet/>
           </div>
-        </Scrollbars>
+        </Scrollbar>
       </div>
     </div>
   );

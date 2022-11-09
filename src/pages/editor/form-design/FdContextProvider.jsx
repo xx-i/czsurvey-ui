@@ -1,5 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import {
+  closestCenter,
   DndContext,
   DragOverlay,
   KeyboardSensor,
@@ -60,29 +61,59 @@ function FdContextProvider({children}) {
   const [quesOrder, setQuesOrder] = useState({typeOrder: initQuesTypeOrder(), itemOrder: []})
   const [quesDetailMap, setQuesDetailMap] = useState(Map({}));
   const [activeQuestionKey, setActiveQuestionKey] = useState(null);
+  const [quesSerial, setQuesSerial] = useState(Map({}));
 
   const mouseSensor = useSensor(MouseSensor, {activationConstraint: {distance: 10}});
   const touchSensor = useSensor(TouchSensor, {activationConstraint: {distance: 10}});
   const keyboardSensor = useSensor(KeyboardSensor, {});
   const sensors = useSensors(mouseSensor, touchSensor, keyboardSensor);
 
+
+  useEffect(() => {
+    let qs = Map({});
+    let begin = 1;
+    quesOrder.itemOrder.forEach((key) => {
+      if (key.startsWith('q_')) {
+        let serialStr = begin < 10 ? '0' + begin.toString() : begin.toString();
+        qs = qs.set(key, serialStr);
+        begin++;
+      }
+    });
+    setQuesSerial(qs);
+  }, [quesOrder])
+
+  // 通过key获取问题题号
+  const getSerialByKey = (key) => {
+    return quesSerial.get(key);
+  }
+
+  // 通过key获取题目详情
   const getQuesDetailByKey = (key) => {
     return quesDetailMap.get(key);
   }
 
+  // 生成一个问题Key
   const getNextQuesKey = () => {
-    let id = randomStr();
+    let id = 'q_' + randomStr();
     return quesDetailMap.has(id) ? getNextQuesKey() : id;
   }
 
-  const createQuestion = (type) => {
+  const createNewQuestion = (type) => {
     const questionKey = getNextQuesKey();
     const question = crateDefaultQuestion(type, getNextQuesKey(questionKey));
     setQuesDetailMap(quesDetailMap.set(questionKey, question));
+    return questionKey;
+  }
+
+  //创建一个新的问题
+  const createQuestion = (type) => {
+    const questionKey = createNewQuestion(type);
     setQuesOrder({...quesOrder, itemOrder: [...quesOrder.itemOrder, questionKey]});
   }
 
-  const sortQuestions = (activeId, overId) => {
+
+  // 交换两个问题的顺序
+  const swapQuestions = (activeId, overId) => {
     if (activeId !== overId) {
       const {itemOrder} = quesOrder;
       const oldIndex = itemOrder.indexOf(activeId);
@@ -95,19 +126,62 @@ function FdContextProvider({children}) {
     getQuesTypeByKey,
     getQuesDetailByKey,
     quesOrder,
+    getSerialByKey,
     createQuestion,
-    sortQuestions,
+    swapQuestions,
     activeQuestionKey,
     setActiveQuestionKey
   }
 
   const handleDragEnd = e => {
     const {active, over} = e;
-    if (active.data?.current?.type === over?.data?.current?.type) {
-      sortQuestions(active.id, over.id);
+    const activeType = active.data?.current?.type;
+    const overType = over?.data?.current?.type;
+    if (activeType === 'question' &&  overType === 'question') {
+      swapQuestions(active.id, over.id);
     }
-    setActiveDraggable(null);
-    console.log(e);
+    if (activeType === 'quesIndicator' && (overType === 'question' || overType === 'quesIndicator')) {
+      const {itemOrder} = quesOrder;
+      const questionKey = createNewQuestion(active.id);
+      if (over.id === active.id) {
+        setQuesOrder({
+          typeOrder: initQuesTypeOrder(),
+          itemOrder: itemOrder.map(e => e === active.id ? questionKey : e)
+        });
+      } else {
+        const activeIndex = itemOrder.indexOf(active.id);
+        const overIndex =  itemOrder.indexOf(over.id);
+        setQuesOrder({
+          typeOrder: initQuesTypeOrder(),
+          itemOrder: arrayMove(itemOrder, activeIndex, overIndex).map(e => e === active.id ? questionKey : e)
+        });
+      }
+    }
+  }
+
+  const handleDragOver = e => {
+    const {active, over} = e;
+    if (
+      over !== null
+      && active.data?.current?.type === 'quesTypeTag'
+      && over.data?.current?.type === 'question'
+    ) {
+      const {typeOrder, itemOrder} = quesOrder;
+      const quesIdIndex = itemOrder.indexOf(over.id);
+      setQuesOrder({
+        typeOrder: [
+          ...typeOrder.map(category => ({
+            ...category,
+            typeKeys: category.typeKeys.map(key => key === active.id ? `DRAGGING_${key}` : key)
+          }))
+        ],
+        itemOrder: [
+          ...itemOrder.slice(0, quesIdIndex),
+          active.id,
+          ...itemOrder.slice(quesIdIndex, itemOrder.length)
+        ]
+      });
+    }
   }
 
   const renderDragOverlay = () => {
@@ -123,6 +197,8 @@ function FdContextProvider({children}) {
       <DndContext
         modifiers={[followMouseModifier]}
         sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragOver={handleDragOver}
         onDragStart={e => {
           setActiveDraggable({id: e.active.id, type: e.active.data.current.type})
         }}
