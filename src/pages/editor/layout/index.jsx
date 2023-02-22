@@ -23,6 +23,7 @@ import classNames from "classnames";
 import { loadingNode } from "@/components/Loading";
 import request from "@/utils/request";
 import { QRCodeCanvas } from 'qrcode.react';
+import { copyToClipboard } from "@/utils/copy";
 
 const iconStyle = {
   marginRight: 8,
@@ -350,7 +351,7 @@ function EditorLayout() {
               status="success"
               size="large"
               onClick={() => {
-                navigator.clipboard.writeText(`${process.env.REACT_APP_PROJECT_LOCATION}/s?id=${surveyId}`);
+                copyToClipboard(`${process.env.REACT_APP_PROJECT_LOCATION}/s?id=${surveyId}`);
                 Message.success('复制问卷地址成功');
               }}
             >

@@ -28,6 +28,7 @@ import { formatTime } from "@/utils/time";
 import { useSelector } from "react-redux";
 import { LayoutContext } from "@/pages/layout";
 import { Scrollbar } from "react-scrollbars-custom";
+import { copyToClipboard } from "@/utils/copy";
 
 function MyProject({isTrash = false}) {
 
@@ -362,7 +363,7 @@ function MyProject({isTrash = false}) {
           key='1'
           onClick={() => {
             const surveyId = project.project.ownerId;
-            navigator.clipboard.writeText(`${process.env.REACT_APP_PROJECT_LOCATION}/s?id=${surveyId}`);
+            copyToClipboard(`${process.env.REACT_APP_PROJECT_LOCATION}/s?id=${surveyId}`);
             Message.success('复制问卷地址成功');
           }}
         >
