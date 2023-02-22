@@ -1,0 +1,20 @@
+.link-btn {
+  cursor: pointer;
+  font-size: inherit;
+  //cursor: not-allowed;
+  &:hover {
+    color: #2196f3;
+  }
+  :global {
+    .arco-icon {
+      font-size: 16px;
+      vertical-align: -3px;
+      margin-right: 8px;
+    }
+  }
+}
+
+.disabled.link-btn {
+  color: rgba(0, 0, 0, 0.3);
+  cursor: not-allowed;
+}

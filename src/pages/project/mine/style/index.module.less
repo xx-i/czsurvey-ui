@@ -76,7 +76,7 @@
 
 .project-drawer {
   z-index: 6;
-
+  border-left: 1px solid #e8e8e8;
   :global {
     .arco-drawer-header {
       height: 60px;
@@ -94,6 +94,9 @@
     .arco-icon-hover:hover::before {
       width: 30px;
       height: 30px;
+    }
+    .arco-drawer-content {
+      overflow: hidden;
     }
   }
 }
@@ -144,4 +147,20 @@
       font-size: 36px;
     }
   }
+}
+
+.menu-icon {
+  margin-right: 8px;
+  font-size: 16px;
+  transform: translateY(1px);
+}
+
+.scroll-bar-track {
+  width: 4px !important;
+  right: 6px !important;
+  background: transparent !important;
+}
+
+.scroll-bar-thumb {
+  background-color: rgba(0, 0, 0, 0.2) !important;
 }

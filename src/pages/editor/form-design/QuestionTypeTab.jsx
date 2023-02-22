@@ -2,10 +2,44 @@ import styles from './style/index.module.less'
 import { useDraggable } from "@dnd-kit/core";
 import { forwardRef, useContext } from "react";
 import { FdContext } from "@/pages/editor/form-design/FdContextProvider";
+import classNames from "classnames";
 
-function QuesTypeTab() {
+function QuestionTypeTab() {
 
   const {quesOrder: {typeOrder}, getQuesTypeByKey, createQuestion} = useContext(FdContext);
+
+  const renderQuestionTabTag = (typeKey) => {
+    const isDraggingTag = typeKey.startsWith('DRAGGING_');
+    const typeDetail = getQuesTypeByKey(isDraggingTag ? typeKey.replace('DRAGGING_', '') : typeKey);
+    if (typeDetail.disabled) {
+      return (
+        <QuestionTabTag
+          key={typeKey}
+          icon={typeDetail.icon}
+          label={typeDetail.label}
+          disabled
+        />
+      );
+    } else if (isDraggingTag) {
+      return (
+        <QuestionTabTag
+          key={typeKey}
+          icon={typeDetail.icon}
+          label={typeDetail.label}
+        />
+      );
+    } else {
+      return (
+        <QuesTabTagItem
+          key={typeDetail.key}
+          id={typeDetail.key}
+          icon={typeDetail.icon}
+          label={typeDetail.label}
+          onClick={() => createQuestion({type: typeDetail.key})}
+        />
+      );
+    }
+  }
 
   return (
     <div className={styles['tab-container']}>
@@ -16,29 +50,7 @@ function QuesTypeTab() {
               <div className={styles['ques-tab-title']}>{category.label}</div>
               <div className={styles['type-tags-container']}>
                 {
-                  category.typeKeys.map(typeKey => {
-                    const isDraggingTag = typeKey.startsWith('DRAGGING_');
-                    const typeDetail = getQuesTypeByKey(isDraggingTag ? typeKey.replace('DRAGGING_', '') : typeKey);
-                    return (
-                      isDraggingTag ?
-                        (
-                          <QuestionTabTag
-                            key={typeKey}
-                            icon={typeDetail.icon}
-                            label={typeDetail.label}
-                          />
-                        ) :
-                        (
-                          <QuesTabTagItem
-                            key={typeDetail.key}
-                            id={typeDetail.key}
-                            icon={typeDetail.icon}
-                            label={typeDetail.label}
-                            onClick={() => createQuestion(typeDetail.key)}
-                          />
-                        )
-                    );
-                  })
+                  category.typeKeys.map(typeKey => renderQuestionTabTag(typeKey))
                 }
               </div>
             </div>
@@ -68,11 +80,21 @@ function QuesTabTagItem({id, icon, label, onClick}) {
 }
 
 export const QuestionTabTag = forwardRef(
-  function QuestionTabTag({icon, label, listeners, transform, dragOverlay = false, onClick, ...props}, ref) {
+  function QuestionTabTag(
+    {
+      icon,
+      label,
+      listeners,
+      transform,
+      dragOverlay = false,
+      onClick,
+      disabled = false,
+      ...props
+    }, ref) {
     return (
       <div
         onClick={onClick}
-        className={styles['type-tags']}
+        className={classNames(disabled && styles['disabled'], styles['type-tags'])}
         style={{transform: transform && dragOverlay && `translate3d(${transform.x}px, ${transform.y}px, 0)`}}
         ref={ref}
         {...listeners}
@@ -85,4 +107,4 @@ export const QuestionTabTag = forwardRef(
   }
 )
 
-export default QuesTypeTab;
+export default QuestionTypeTab;

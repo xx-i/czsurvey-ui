@@ -14,12 +14,18 @@ const iconStyle = {
 function NavBar({ children }) {
 
   const { onLogout } = useAuth();
-  const { nickname } = useSelector(state => state.user)
+  const { nickname, avatar } = useSelector(state => state.user)
 
   const userDropList = (
     <Menu>
       <Menu.Item key='1'><IconUser style={iconStyle} />个人中心</Menu.Item>
       <Menu.Item key='2' onClick={() => onLogout()}><IconPoweroff style={iconStyle} />退出登录</Menu.Item>
+    </Menu>
+  );
+
+  const otherDropList = (
+    <Menu>
+      <Menu.Item key='1'><IconUser style={iconStyle} />帮助文档</Menu.Item>
     </Menu>
   );
 
@@ -37,8 +43,8 @@ function NavBar({ children }) {
       <div className={styles['nav-right']}>
         <Dropdown droplist={userDropList} trigger="click" position="bottom">
           <div className={styles['user-info-container']}>
-            <Avatar style={{ backgroundColor: '#3370ff', marginRight: '8px' }} size={32}>
-              <IconUser />
+            <Avatar className={styles['avatar']} size={32}>
+              {avatar ? (<img alt="avatar" src={avatar}/>) : <IconUser />}
             </Avatar>
             <div className={styles['nickname']}>
               <span>{nickname}</span>
@@ -46,7 +52,7 @@ function NavBar({ children }) {
             <IconDown/>
           </div>
         </Dropdown>
-        <Dropdown droplist={userDropList} trigger="click">
+        <Dropdown droplist={otherDropList} trigger="click">
           <div className={styles['icon-drop-btn']}>
             <IconMenu />
           </div>

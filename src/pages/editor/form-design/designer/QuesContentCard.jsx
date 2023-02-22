@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef, useState } from "react";
 import styles from './style/index.module.less';
 import classNames from "classnames";
 import InlineRichEditor from "@/components/InlineRichEditor";
@@ -6,8 +6,10 @@ import { IconCopy, IconDelete, IconDragArrow, IconPlusCircleFill, IconStar } fro
 import { useSortable } from "@dnd-kit/sortable";
 import {CSS} from '@dnd-kit/utilities';
 import { FdContext } from "@/pages/editor/form-design/FdContextProvider";
+import { Message } from "@arco-design/web-react";
+import { convertFromRaw, convertToRaw } from "draft-js";
 
-function QuesContentCard({id, tag, children}) {
+function QuesContentCard({id, tag, simple = false, children}) {
   let contentSlot = null;
   let bottomSlot = null;
 
@@ -30,8 +32,21 @@ function QuesContentCard({id, tag, children}) {
     transition,
   } = useSortable({id, data: {type: 'question'}});
 
-  const {activeQuestionKey, setActiveQuestionKey, getSerialByKey} = useContext(FdContext);
+  const quesTitleRef = useRef();
+  const {
+    activeQuestionKey,
+    setActiveQuestionKey,
+    getSerialByKey,
+    getQuesDetailByKey,
+    setQuesDetail,
+    surveySettings,
+    deleteCurrentPageQuestionByKey,
+    createQuestion
+  } = useContext(FdContext);
+  const questionDetail = getQuesDetailByKey(id);
+  const [titleContentState, setTitleContentState] = useState(questionDetail.get('title'));
 
+  const serial = getSerialByKey(id);
   const transformStyle = CSS.Transform.toString(transform);
 
   const style = {
@@ -53,6 +68,23 @@ function QuesContentCard({id, tag, children}) {
     </div>
   );
 
+  const handleQuesTitleEditorBlur = (contentState) => {
+    if (!(contentState.hasText() && (contentState.getPlainText() !== ''))) {
+      Message.warning('请输入题目标题');
+      const clone = convertFromRaw(convertToRaw(questionDetail.get('title')));
+      setTitleContentState(clone);
+    } else {
+      setQuesDetail(questionDetail.set('title', contentState));
+    }
+  };
+
+  const getEditorPrefix = () => {
+    if (!surveySettings?.displayQuestionNo) {
+      return null;
+    }
+    return serial && <SerialNum num={serial > 9 ? serial.toString() : `0${serial.toString()}`}/>;
+  }
+
   return (
     <div
       className={
@@ -66,7 +98,11 @@ function QuesContentCard({id, tag, children}) {
       style={style}
       onClick={(e) => {
         e.stopPropagation();
-        setActiveQuestionKey(id)
+        if (activeQuestionKey !== id) {
+          // todo: 待优化
+          // quesTitleRef.current.focus();
+          setActiveQuestionKey(id);
+        }
       }}
     >
       <div className={styles['su-content-card']}>
@@ -75,12 +111,31 @@ function QuesContentCard({id, tag, children}) {
         </div>
         <div className={styles['card-content-wrapper']}>
           <div className={styles['card-content']}>
-            <div>
-              <InlineRichEditor className={styles['ques-title']} editorPrefix={<SerialNum num={getSerialByKey(id)}/>} defaultText="请输入题目标题"/>
-            </div>
-            <div className={styles['ques-desc']}>
-              <InlineRichEditor className={styles['ques-desc']} defaultText="请输入题目标题（选填）"/>
-            </div>
+            {
+              !simple
+              && (
+                <>
+                  <div className={styles['ques-title-container']}>
+                    {questionDetail.get('required') && <span className={styles['question-required']}>*</span>}
+                    <InlineRichEditor
+                      ref={quesTitleRef}
+                      className={styles['ques-title']}
+                      editorPrefix={getEditorPrefix()}
+                      contentState={titleContentState}
+                      onBlur={handleQuesTitleEditorBlur}
+                    />
+                  </div>
+                  <div className={styles['ques-desc']}>
+                    <InlineRichEditor
+                      className={styles['ques-desc']}
+                      placeholder="请输入题目说明（选填）"
+                      contentState={questionDetail.get('description')}
+                      onBlur={contentState => setQuesDetail(questionDetail.set('description', contentState))}
+                    />
+                  </div>
+                </>
+              )
+            }
             <div className={styles['ques-body']}>
               {contentSlot}
             </div>
@@ -92,13 +147,23 @@ function QuesContentCard({id, tag, children}) {
             {bottomSlot}
           </div>
         }
-        <div className={styles['card-tools']}>
-          <button className={classNames(styles['add-btn'], styles['top-btn'])}><IconPlusCircleFill /></button>
+        <div className={styles['card-tools']} onClick={event => event.stopPropagation()}>
+          <button
+            className={classNames(styles['add-btn'], styles['top-btn'])}
+            onClick={() => createQuestion({targetKey: id, position: 'before', type: questionDetail.get('type')})}
+          >
+            <IconPlusCircleFill />
+          </button>
           <button title="收藏"><IconStar /></button>
-          <button title="复制"><IconCopy /></button>
+          <button title="复制" onClick={() => createQuestion({targetKey: id}, 'copy')}><IconCopy /></button>
           <button title="长按拖动题目" {...attributes} {...listeners}><IconDragArrow /></button>
-          <button title="删除"><IconDelete /></button>
-          <button className={classNames(styles['add-btn'], styles['bottom-btn'])}><IconPlusCircleFill /></button>
+          <button title="删除" onClick={() => deleteCurrentPageQuestionByKey(id)}><IconDelete /></button>
+          <button
+            className={classNames(styles['add-btn'], styles['bottom-btn'])}
+            onClick={() => createQuestion({targetKey: id, position: 'after', type: questionDetail.get('type')})}
+          >
+            <IconPlusCircleFill />
+          </button>
         </div>
       </div>
     </div>

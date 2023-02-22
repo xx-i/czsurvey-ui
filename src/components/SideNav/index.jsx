@@ -1,11 +1,19 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import styles from "./style/index.module.less";
 import classNames from "classnames";
 import { Scrollbar } from 'react-scrollbars-custom';
 
 const SideNavContext = createContext(null);
 
-function SideNav({defaultActiveTab, collapse = true, setCollapse, children}) {
+function SideNav(
+  {
+    active,
+    collapse = true,
+    setCollapse,
+    children,
+    onChange,
+  }
+) {
   const topMenus = [];
   const bottomMenus = [];
   const tabs = [];
@@ -25,11 +33,15 @@ function SideNav({defaultActiveTab, collapse = true, setCollapse, children}) {
     return position !== 'bottom' && activable;
   });
 
-  const [activeKey, setActiveKey] = useState(defaultActiveTab || (firstActiveTab && firstActiveTab.props.uniqueKey));
+  const [activeKey, setActiveKey] = useState(active || (firstActiveTab && firstActiveTab.props.uniqueKey));
   const activeTab = tabs.find(e => e.props?.matchKey === activeKey);
 
+  useEffect(() => {
+    setActiveKey(active);
+  }, [active]);
+
   return (
-    <SideNavContext.Provider value={{activeKey, setActiveKey, collapse, setCollapse}}>
+    <SideNavContext.Provider value={{activeKey, setActiveKey, collapse, setCollapse, onChange}}>
       <div className={classNames(styles['side-nav'], collapse && styles['collapsed'])}>
         <div className={styles['container-wrapper']}>
           <div className={styles['menu-container']}>
@@ -71,12 +83,17 @@ function SideNav({defaultActiveTab, collapse = true, setCollapse, children}) {
 
 function Menu({icon, label, uniqueKey, activable = false, onClick}) {
   
-  const { activeKey, setActiveKey, collapse, setCollapse } = useContext(SideNavContext);
+  const { activeKey, setActiveKey, collapse, setCollapse, onChange } = useContext(SideNavContext);
 
   function handleClick(event) {
     if (activable) {
-      setActiveKey(uniqueKey);
-      setCollapse(false);
+      if (onChange) {
+        onChange(uniqueKey);
+        setCollapse(false);
+      } else {
+        setActiveKey(uniqueKey);
+        setCollapse(false);
+      }
     }
     onClick && onClick(event);
   }

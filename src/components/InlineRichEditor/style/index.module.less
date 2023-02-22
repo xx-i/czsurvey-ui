@@ -1,4 +1,7 @@
 .editor-wrapper {
+  display: flex;
+  width: 100%;
+
   .editor-container {
     position: relative;
     cursor: text;
@@ -7,9 +10,13 @@
     border: 1px solid transparent;
     border-radius: 3px;
     display: flex;
+    width: 100%;
 
     &:hover {
       border: 1px dashed #2378ff;
+      .cancel-btn {
+        display: flex;
+      }
     }
 
     .editor {
@@ -25,12 +32,46 @@
       left: 0;
       border-radius: 3px;
       padding: 0 12px;
+      z-index: 10;
     }
   }
 
   &.focus {
     .editor-container {
       border: 1px solid #2378ff;
+      .cancel-btn {
+        display: flex;
+      }
+    }
+  }
+
+  &.cancellable {
+    .editor-container {
+      width: calc(100% - 22px);
+    }
+  }
+
+  .cancel-btn {
+    width: 22px;
+    position: absolute;
+    right: -22px;
+    top: 0;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    button {
+      display: inline-block;
+      font-size: 16px;
+      padding-left: 6px;
+      :global {
+        .arco-icon {
+          cursor: pointer;
+          &:hover {
+            color: #2378ff;
+          }
+        }
+      }
     }
   }
 }

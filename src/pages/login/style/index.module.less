@@ -20,16 +20,11 @@
 
 .login-form {
   width: 360px;
-  margin: -230px auto auto;
   padding: 16px 28px;
-  position: absolute;
-  top: 50%;
-  right: 15%;
   max-width: 100%;
   box-sizing: border-box;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
   border-radius: 6px;
-  z-index: 2;
   background: #fff;
 
   h4 {
@@ -38,6 +33,9 @@
   }
 
   :global {
+    .arco-tabs-header {
+      transform: translateX(36px) !important;
+    }
     .arco-tabs-header-nav {
       &::before {
         background-color: transparent;
@@ -103,11 +101,30 @@
       font-size: 30px;
     }
 
+    .scanned-icon-container {
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      background: #ffffff;
+      display: flex;
+      .scanned-icon {
+        display: block;
+        color: #00b42a;
+        font-size: 40px;
+      }
+    }
+
     span {
       display: block;
       text-align: center;
       font-size: 14px;
       color: #fff;
+    }
+
+    .scanned-tip-text {
+      margin-top: 3px;
+      font-size: 12px;
     }
 
     a {
@@ -133,4 +150,12 @@
   line-height: 22px;
   color: #555;
   margin-bottom: 5px;
+}
+
+.main-login-form {
+  position: absolute;
+  top: 50%;
+  right: 15%;
+  z-index: 2;
+  margin: -230px auto auto;
 }

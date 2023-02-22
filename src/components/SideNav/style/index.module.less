@@ -3,7 +3,7 @@
   position: fixed;
   top: 144px;
   left: 16px;
-  z-index: 3;
+  z-index: 5;
   height: calc(100vh - 128px - 16px * 2) !important;
   min-height: 500px;
   background-color: #fff;
@@ -37,8 +37,11 @@
   padding: 8px 0;
   cursor: pointer;
   user-select: none;
-  :global(.arco-icon) {
-    font-size: 24px;
+  :global {
+    .arco-icon, .cz-icon {
+      font-size: 24px;
+    }
+
   }
   .menu-text {
     display: block;

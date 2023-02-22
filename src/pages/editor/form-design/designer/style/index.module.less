@@ -1,8 +1,34 @@
+.designer-wrapper {
+  padding: 136px 16px 120px;
+  background-image: url("../assets/bg.png");
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
 .pagination {
   position: fixed;
   left: 350px;
   top: 144px;
   z-index: 10;
+
+  .divider {
+    height: 15px;
+    width: 2px;
+    display: inline-block;
+  }
+
+  .add-page-btn {
+    margin-right: 8px;
+    font-size: 16px;
+    :global {
+      .cz-icon {
+        vertical-align: -3px;
+      }
+    }
+    &:hover {
+      color: #2378ff;
+    }
+  }
 }
 
 .pagination-menu {
@@ -20,10 +46,10 @@
 
 .designer-container {
   width: calc(100vw - 834px);
-  margin: 136px auto 160px;
+  margin: 0 auto ;
   min-width: 640px;
   max-width: 1128px;
-  padding: 32px 0;
+  padding: 32px 0 40px;
   box-shadow: 0 4px 16px rgb(0 0 0 / 7%);
   border-radius: 3px;
   background-color: #ffffff;
@@ -42,7 +68,7 @@
 
 .is-dragging {
   .su-content-card {
-    > *:not(.card-tools) {
+    > *:not(.card-tools):not(.card-bottom) {
       opacity: 0.4;
     }
     transform: scale(1.01);
@@ -54,10 +80,23 @@
       }
       display: flex;
     }
+    .card-bottom {
+      > * {
+        opacity: 0.4;
+      }
+    }
+  }
+}
+
+.content-card-wrapper {
+  position: relative;
+  &:hover {
+    z-index: 3;
   }
 }
 
 .active {
+  z-index: 3;
   .su-content-card {
     transform: scale(1.01);
     box-shadow: 0 4px 16px rgb(0 0 0 / 7%);
@@ -67,8 +106,8 @@
 .su-title-container {
   padding: 16px 60px;
   transition-duration: 0.3s;
-  background: inherit;
   box-sizing: border-box;
+  background: #ffffff;
   &:hover {
     transform: scale(1.01);
     box-shadow: 0 4px 16px rgb(0 0 0 / 7%);
@@ -123,6 +162,11 @@
 
 
 /*----------- ques-content-card --------------*/
+
+.active.ques-content-card {
+  z-index: 3;
+}
+
 .ques-content-card {
   margin-bottom: 56px;
   position: relative;
@@ -130,7 +174,7 @@
   .card-title {
     height: 50px;
     box-sizing: border-box;
-    padding: 12px 60px 0;
+    padding: 12px 68px 0;
     cursor: move;
 
    .card-tag {
@@ -142,8 +186,24 @@
    }
   }
 
-  .card-content {
+  .card-content-wrapper {
     padding: 0 60px 8px;
+  }
+
+  .card-content {
+
+    .ques-title-container {
+      position: relative;
+      .question-required {
+        position: absolute;
+        left: -14px;
+        top: 9px;
+        font-size: 18px;
+        margin-right: 4px;
+        color: rgba(218,35,25,1);
+      }
+    }
+
     .ques-title {
       line-height: 28px;
       font-size: 18px;
@@ -168,7 +228,7 @@
     background: inherit;
     padding: 0 60px;
     box-sizing: border-box;
-    //background: yellow;
+    background-color: #fff;
   }
 
   .card-tools {
@@ -228,5 +288,42 @@
     .card-tools {
       display: flex;
     }
+  }
+}
+
+/******* settingPanel ************/
+
+.setting-panel {
+  :global {
+    .arco-tabs-content {
+      padding-top: 0;
+    }
+  }
+}
+
+.panel-settings {
+  padding: 0 16px;
+}
+
+.general-settings {
+  box-sizing: border-box;
+  margin-top: 24px;
+  .setting-title {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 16px;
+    padding-bottom: 8px;
+    margin: 0;
+    color: #000;
+  }
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  span {
+    display: inline-block;
   }
 }

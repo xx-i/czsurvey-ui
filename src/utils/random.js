@@ -6,3 +6,18 @@ export function randomStr(length = 4) {
   }
   return str;
 }
+
+export function randomStrArr(strLength, arrSize) {
+  const result = [];
+  for (let i = 0; i < arrSize; ++i) {
+    // result.push()
+    do {
+      const str = randomStr(strLength);
+      if (result.indexOf(strLength) === -1) {
+        result.push(str);
+        break;
+      }
+    } while (true);
+  }
+  return result;
+}

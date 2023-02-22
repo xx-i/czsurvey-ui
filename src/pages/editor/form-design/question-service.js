@@ -1,6 +1,7 @@
 import { IconCodeSquare, IconSettings } from "@arco-design/web-react/icon";
 import { Map } from "immutable";
-import { ContentState, convertFromRaw, convertToRaw } from "draft-js";
+import { ContentState } from "draft-js";
+import { randomStrArr } from "@/utils/random";
 
 export const questionTypes = [
   {
@@ -20,7 +21,8 @@ export const questionTypes = [
       {
         key: 'SELECT',
         icon: <IconCodeSquare />,
-        label: '下拉'
+        label: '下拉',
+        disabled: true
       },
     ]
   },
@@ -47,22 +49,26 @@ export const questionTypes = [
       {
         key: 'RATE',
         icon: <IconSettings />,
-        label: '量表/NPS'
+        label: '量表/NPS',
+        disabled: true
       },
       {
         key: 'UPLOAD',
         icon: <IconCodeSquare />,
-        label: '文件/图片'
+        label: '文件/图片',
+        disabled: true
       },
       {
         key: 'DATETIME',
         icon: <IconCodeSquare />,
-        label: '时间日期'
+        label: '时间日期',
+        disabled: true,
       },
       {
         key: 'SIGN',
         icon: <IconCodeSquare />,
-        label: '手写签名'
+        label: '手写签名',
+        disabled: true
       },
     ]
   },
@@ -73,40 +79,85 @@ export const questionTypes = [
       {
         key: 'DESCRIPTION',
         icon: <IconCodeSquare />,
-        label: '备注说明'
+        label: '文本说明'
       }
     ]
   }
 ];
 
-function convertQuesDataToDetail(question) {
-  const extra = {
-    titleText: convertFromRaw(question.title).getPlainText()
-  };
-  return Map({...question, extra});
+export function isInputModeQuestionType(type) {
+  return type !== 'DESCRIPTION';
 }
 
-export function crateDefaultQuestion(type, questionKey) {
-  const common = {
+export function isChoiceQuestion(type) {
+  return ['RADIO', 'CHECKBOX', 'SELECT'].indexOf(type) !== -1;
+}
+
+export function crateDefaultQuestion(type, questionKey, pageKey) {
+  let common = {
     questionKey,
-    title: convertToRaw(ContentState.createFromText('请输入题目标题')),
+    title: ContentState.createFromText('请输入题目标题'),
     description: null,
     type,
+    pageKey,
     required: true,
   };
   let additionalInfo = null;
   switch (type) {
     case 'INPUT': {
-      additionalInfo = {inputType: null, maxLength: null};
+      additionalInfo = {type: null, maxLength: null};
       break;
     }
     case 'TEXTAREA': {
       additionalInfo = {maxLength: null, minLength: null};
       break;
     }
+    case 'RADIO': {
+      const getRadioOptions = () => {
+        const radioKeys = randomStrArr(4, 2);
+        return radioKeys.map(key => ({
+          id: 'ro_' + key,
+          label: ContentState.createFromText('选项'),
+          fixed: false,
+          otherOption: false
+        }));
+      };
+      additionalInfo = {
+        options: getRadioOptions(),
+        random: false,
+        reference: false,
+        refQuestionKey: null
+      }
+      break
+    }
+    case 'CHECKBOX': {
+      const getCheckboxOptions = () => {
+        const checkboxKeys = randomStrArr(4, 2);
+        return checkboxKeys.map(key => ({
+          id: 'co_' + key,
+          label: ContentState.createFromText('选项'),
+          fixed: false,
+          otherOption: false,
+          exclusive: false
+        }));
+      }
+      additionalInfo = {
+        options: getCheckboxOptions(),
+        random: false,
+        minLength: null,
+        maxLength: null,
+        reference: false,
+        refQuestionKey: null
+      }
+      break;
+    }
+    case 'DESCRIPTION': {
+      common = {...common, title: ContentState.createFromText('请输入文本描述'), required: false};
+      break;
+    }
     default: {
       throw new Error(`类型${type}不存在`);
     }
   }
-  return convertQuesDataToDetail({...common, additionalInfo});
+  return Map({...common, additionalInfo});
 }

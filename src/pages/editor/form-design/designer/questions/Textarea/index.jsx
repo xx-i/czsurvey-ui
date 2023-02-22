@@ -1,7 +1,7 @@
 import QuesContentCard from "@/pages/editor/form-design/designer/QuesContentCard";
-import styles from "@/pages/editor/form-design/designer/style/formItem.module.less";
+import styles from "./style/index.module.less";
 
-function Textarea({id}) {
+function TextArea({id}) {
   return (
     <QuesContentCard id={id} tag="多行文本">
       <QuesContentCard.ContentSlot>
@@ -11,4 +11,4 @@ function Textarea({id}) {
   );
 }
 
-export default Textarea;
+export default TextArea;

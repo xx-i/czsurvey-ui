@@ -1,6 +1,6 @@
 .editor-nav {
   position: fixed;
-  z-index: 6;
+  z-index: 20;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -21,14 +21,14 @@
 
 .nav-top {
   top: 0;
-  z-index: 7;
+  z-index: 21;
   .nav-left-container {
     .nav-logo {
       display: inline-block;
-      margin-right: 8px;
+      //margin-right: 8px;
       img {
         display: inline-block;
-        width: 30px;
+        width: 32px;
         height: 32px;
         vertical-align: middle;
       }
@@ -61,7 +61,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         vertical-align: middle;
-        line-height: 1;
+        line-height: 1.5;
       }
     }
 
@@ -100,15 +100,51 @@
   .nav-center-container {
     display: flex;
     align-items: center;
+    .link {
+      cursor: pointer;
+    }
+    .disabled {
+      cursor: not-allowed;
+    }
     .next {
+      position: relative;
       font-size: 16px;
       + .next {
         margin-left: 12px;
+      }
+
+      &.active {
+        color: #165dff;
+        &::after {
+          content: "";
+          display: block;
+          position: absolute;
+          width: 32px;
+          height: 3px;
+          background: #165dff;
+          border-radius: 1.5px;
+          left: 0;
+          top: 41px;
+        }
       }
     }
 
     :global(.arco-icon) {
       color: #cdcdcd;
+    }
+  }
+
+  .nav-left-container {
+    .nav-left-btn {
+      display: inline-block;
+      margin-right: 16px;
+      cursor: pointer;
+      &.active {
+        color: rgb(22, 93, 255);
+      }
+    }
+    .active {
+      color: rgb(22, 93, 255);
     }
   }
 
@@ -123,6 +159,7 @@
   width: 100vw;
   height: 100vh;
   box-sizing: border-box;
+  background-color: #f4f6f9;
 
   .editor-main-container {
     //padding: 144px 16px 16px;
@@ -138,4 +175,67 @@
 
 .scroll-bar-thumb {
   background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+.preview-modal {
+  width: 100vw;
+  height: 100vh;
+  padding-top: 128px;
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 15;
+  background: #f4f6f9;
+
+  .mobile-frame {
+    margin: 80px auto;
+    width: 430px;
+    height: 822px;
+    background-image: url("../assets/mobile-frame.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: 62px 36px 40px;
+    box-sizing: border-box;
+
+    .preview-iframe {
+      height: 720px;
+      width: 360px;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+  }
+}
+
+.loading.preview-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.share-modal-title {
+  text-align: left;
+  font-weight: bold;
+}
+
+.share-modal {
+  width: 260px;
+}
+
+.share-modal-content {
+  .qrcode-container {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+  }
+  .operator-btn-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0 15px;
+    margin-top: 20px;
+    :global {
+      .arco-btn:first-child {
+        margin-bottom: 8px;
+      }
+    }
+  }
 }

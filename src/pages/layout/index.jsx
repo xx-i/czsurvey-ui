@@ -7,22 +7,27 @@ import {
   IconPlus, IconRight,
   IconUser
 } from "@arco-design/web-react/icon";
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import request from "@/utils/request";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setBreadCrumb } from "@/store/breadCrumbSlice";
+import { useLoading } from "@/components/Loading";
+import { Set } from 'immutable'
+import qs from 'qs';
+
+export const LayoutContext = createContext(null);
 
 const MenuItem = Menu.Item;
 const SubMenu = Menu.SubMenu;
 
 const menus = {
   workbench: [
-    {
-      key: 'recent',
-      name: '最近',
-      icon: <IconClockCircle/>
-    },
+    // {
+    //   key: 'recent',
+    //   name: '最近',
+    //   icon: <IconClockCircle/>
+    // },
     {
       key: 'mine',
       name: '我创建的',
@@ -32,7 +37,8 @@ const menus = {
     {
       key: 'recycle',
       name: '回收站',
-      icon: <IconDelete/>
+      icon: <IconDelete/>,
+      leafNode: true
     }
   ],
   templateLib: [
@@ -49,6 +55,8 @@ const menus = {
     }
   ]
 }
+
+const leafNodeMenuKey = Set(['recycle']);
 
 const renderMenus = (key, data = []) => {
   return menus[key].map(router => {
@@ -79,6 +87,7 @@ const getMenuKey = path => {
   return splitPath.replace('/', '.') || 'mine';
 }
 
+// 获取顶部导航菜单名称
 const getTopMenu = path => {
   const menuKey = getMenuKey(path);
   const topMenus = Object.keys(menus);
@@ -98,9 +107,12 @@ function PageLayout() {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [createFolderParam, setCreateFolderParam] = useState("新建文件夹");
   const [folder, setFolder] = useState([]);
+  const [deletedFolder, setDeletedFolder] = useState([]);
   const [openKeys, setOpenKeys] = useState([]);
   const [topMenu, setTopMenu] = useState(getTopMenu(location.pathname));
   const [selectKeys, setSelectKeys] = useState([getMenuKey(location.pathname)]);
+  const [createdFolderSuccessFlag, setCreatedFolderSuccessFlag] = useState(false);
+  const {setLoading} = useLoading();
   let dispatch = useDispatch();
 
   const createFolder = () => {
@@ -109,6 +121,7 @@ function PageLayout() {
       .post('/project/folder', {folderName: createFolderParam})
       .then(res => {
         handleModalClose();
+        setCreatedFolderSuccessFlag(!createdFolderSuccessFlag);
         fetchMyFolder();
       })
       .finally(() => {
@@ -118,9 +131,10 @@ function PageLayout() {
 
   const fetchMyFolder = () => {
     request
-      .get('/project/myFolder')
+      .get('/project/myAllFolder')
       .then(res => {
-        setFolder(res.data);
+        setFolder(res.data.filter(folder => !folder.deleted));
+        setDeletedFolder(res.data.filter(folder => folder.deleted));
         if (res.data.length > 0) {
           setOpenKeys(['mine']);
         }
@@ -144,6 +158,11 @@ function PageLayout() {
     if (keys.length > 1) {
       if (menu.key === 'mine') {
         let currentFolder = folder.find(e => e.id === keys[1]);
+        if (currentFolder) {
+          breadCrumb.push({path: `/mine/${currentFolder.id}`, name: currentFolder.name});
+        }
+      } else if (menu.key === 'recycle') {
+        let currentFolder = deletedFolder.find(e => e.id === keys[1]);
         if (currentFolder) {
           breadCrumb.push({path: `/mine/${currentFolder.id}`, name: currentFolder.name});
         }
@@ -179,18 +198,46 @@ function PageLayout() {
     setTopMenu(getTopMenu(location.pathname));
     changeBreadCrumb(getMenuKey(location.pathname));
     let key = getMenuKey(location.pathname);
-    setSelectKeys([key]);
     let splitKeys = key.split('.');
+    if (leafNodeMenuKey.contains(splitKeys[0])) {
+      setSelectKeys([splitKeys[0]]);
+    } else {
+      setSelectKeys([key]);
+    }
     if (splitKeys.length > 1 && splitKeys[0] === 'mine') {
       setOpenKeys(['mine']);
     }
     // eslint-disable-next-line
   }, [location.pathname]);
 
+  const createSurvey = () => {
+    setLoading(true);
+    const menuKey = getMenuKey(location.pathname);
+    const splitKeys = menuKey.split('.');
+    let folderId = 0;
+    if (splitKeys.length > 1 && splitKeys[0] === 'mine') {
+      folderId = splitKeys[1];
+    }
+    request
+      .post('/survey', {folderId})
+      .then(res => {
+        const {data: {id}} = res;
+        navigate(`/design?${qs.stringify({id})}`);
+      })
+      .catch(() => setLoading(false));
+  }
+
   const createDropList = (
     <Menu className={styles['btn-menu']}>
-      <Menu.Item key='1'><IconDriveFile />空白问卷</Menu.Item>
-      <Menu.Item key='2' onClick={() => setVisible(true)}><IconFolder />新建文件夹</Menu.Item>
+      <Menu.Item key='1' onClick={() => createSurvey()}><IconDriveFile />空白问卷</Menu.Item>
+      <Menu.Item
+        key='2'
+        disabled={selectKeys.length === 0 || selectKeys[selectKeys.length - 1] !== 'mine'}
+        onClick={() => setVisible(true)}
+      >
+        <IconFolder />
+        新建文件夹
+      </Menu.Item>
     </Menu>
   );
 
@@ -245,9 +292,11 @@ function PageLayout() {
             {renderMenus(topMenu, folder)}
           </Menu>
         </Layout.Sider>
-        <Layout.Content className={styles['layout-content']}>
-          <Outlet/>
-        </Layout.Content>
+        <LayoutContext.Provider value={{createdFolderSuccessFlag, fetchMyFolder, folder}}>
+          <Layout.Content className={styles['layout-content']}>
+            <Outlet/>
+          </Layout.Content>
+        </LayoutContext.Provider>
       </Layout>
       <Modal
         style={{width: '420px'}}

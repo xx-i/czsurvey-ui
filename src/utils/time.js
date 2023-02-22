@@ -85,3 +85,21 @@ export function formatTime(time, option) {
     )
   }
 }
+
+/**
+ * 将秒转化为时分秒
+ * @param second
+ */
+export function formatSecondTime(second) {
+  let timeStr = '';
+  const hour = Math.floor(second / 3600);
+  if (hour > 0) {
+    timeStr = timeStr + hour + '小时'
+  }
+  const minute = Math.floor((second % 3600) / 60);
+  if (minute > 0 || hour > 0) {
+    timeStr = timeStr + minute + '分钟'
+  }
+  timeStr += second % 60 + '秒'
+  return timeStr;
+}

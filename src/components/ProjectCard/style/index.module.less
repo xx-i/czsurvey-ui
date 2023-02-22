@@ -81,18 +81,19 @@
       width: 100%;
       transition: opacity 0.3s, transform 0.3s ease;
 
-      a {
-        padding: 0;
-        color: #333;
-        line-height: 21px;
-        background-color: transparent;
-        vertical-align: middle;
+      :global {
+        .arco-link {
+          padding: 0;
+          color: #333;
+          line-height: 21px;
+          background-color: transparent;
+          vertical-align: middle;
 
-        &:hover {
-          color: rgb(var(--link-6));
+          &:hover {
+            color: rgb(var(--link-6));
+          }
         }
       }
-
       :global(.arco-icon) {
         font-size: 16px;
         vertical-align: -3px

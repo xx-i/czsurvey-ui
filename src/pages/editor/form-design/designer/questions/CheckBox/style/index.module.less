@@ -1,0 +1,99 @@
+.checkbox-prefix-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .checkbox-prefix {
+    width: 14px;
+    height: 14px;
+    border: 1px solid #aaa;
+    margin-right: 8px;
+    box-sizing: border-box;
+    border-radius: 3px;
+  }
+}
+
+.checkbox-option {
+  position: relative;
+  &:hover {
+    .dragging-handler {
+      display: flex;
+    }
+    .option-tag-container {
+      display: none;
+    }
+    :global {
+      .inline-rich-editor {
+        border: 1px dashed #2378ff;
+        .cancel-btn {
+          display: flex;
+        }
+      }
+    }
+  }
+  .dragging-handler {
+    display: none;
+    position: absolute;
+    width: 20px;
+    left: -20px;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    cursor: move;
+    font-size: 16px;
+  }
+
+  .option-tag-container {
+    position: absolute;
+    right: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    box-sizing: border-box;
+    .option-tag {
+      width: 24px;
+      display: block;
+      background: #e2e2e2;
+      color: #333333;
+      border-radius: 4px;
+      height: 14px;
+      line-height: 14px;
+      padding: 0 2px;
+      transform: scale(0.83);
+    }
+  }
+}
+
+.other-option {
+  .dragging-handler {
+    cursor: not-allowed;
+  }
+  .other-textarea {
+    pointer-events: none;
+    padding: 8px 20px;
+    margin-top: 6px;
+    background-color: rgba(255,255,255,1);
+    border: 1px solid rgba(0,0,0,0.2);
+    width: calc(100% - 22px);
+    border-radius: 3px;
+  }
+  margin-bottom: 4px;
+}
+
+.dragging.checkbox-option {
+  height: 1px;
+  background: #0F6BFF;
+  box-sizing: border-box;
+
+  * {
+    display: none;
+  }
+}
+
+.reference-tip {
+  padding: 5px 8px;
+  margin-top: 8px;
+}

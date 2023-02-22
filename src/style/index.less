@@ -1,0 +1,107 @@
+body {
+  font-family: 'PingFang SC', tahoma, arial, 'helvetica neue', 'hiragino sans gb', 'microsoft yahei', sans-serif;
+}
+
+button {
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+textarea, input {
+  box-sizing: border-box;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+//.arco-message-wrapper-top {
+//  top: 12px !important;
+//}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.loading-wrapper {
+  width: 100%;
+  height: calc(100vh - 128px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rewrite-arco {
+  .arco-select  {
+    .arco-select-view {
+      background: #ffffff;
+      border: 1px solid #dcdcdc;
+    }
+    &.arco-select-focused {
+      .arco-select-view {
+        border-color: rgb(var(--primary-6));
+      }
+      box-shadow: 0 0 0 2px #d6e7ff;
+    }
+    &:hover {
+      background-color: #ffffff;
+      .arco-select-view {
+        border-color: rgb(var(--primary-6));
+      }
+    }
+  }
+
+  .arco-input-inner-wrapper {
+    border: 1px solid #dcdcdc;
+    background: #ffffff;
+    &:hover {
+      border-color: rgb(var(--primary-6));
+    }
+    &:focus {
+      box-shadow: 0 0 0 2px #d6e7ff;
+    }
+    &.arco-input-inner-wrapper-focus {
+      box-shadow: 0 0 0 2px #d6e7ff;
+    }
+  }
+
+  .arco-picker {
+    border: 1px solid #dcdcdc;
+    background: #ffffff;
+    &:hover {
+      border-color: rgb(var(--primary-6));
+    }
+    &:focus {
+      box-shadow: 0 0 0 2px #d6e7ff;
+    }
+    &.arco-picker-focused {
+      box-shadow: 0 0 0 2px #d6e7ff;
+    }
+  }
+}
+
+.sk-wave-rect {
+  background-color: rgb(22, 93, 255) !important;
+}
+
+.setting-modal-content {
+  .arco-checkbox {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+}

@@ -1,0 +1,104 @@
+.logic-wrapper {
+  padding-top: 16px;
+  padding-bottom: 16px;
+
+  .logic-spin {
+    width: 100%;
+  }
+
+  .logic-view {
+    width: 960px;
+    margin: 0 auto;
+    min-height: calc(100vh - 128px - 16px * 2);
+    background: #fff;
+    box-sizing: border-box;
+    padding: 0 20px 24px;
+    box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
+    transform: translateX(44px);
+  }
+}
+
+.logic-head {
+  display: flex;
+  border-bottom: 1px solid #E5E5E5;
+  align-items: center;
+  justify-content: space-between;
+  height: 54px;
+
+  .logic-title {
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.logic-content {
+
+  .logic-list {
+    .logic-item {
+      position: relative;
+      padding: 10px 16px;
+      border-bottom: 1px solid #E5E5E5;
+
+      &:hover {
+        .deleted-btn {
+          visibility: visible;
+          opacity: 1;
+          transition: visibility 0s, opacity .3s linear;
+        }
+      }
+
+      .deleted-btn {
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        right: 16px;
+        top: 14px;
+      }
+
+      .add-button-group {
+        :global {
+          .arco-btn + .arco-btn {
+            margin-left: 8px;
+          }
+
+          .arco-btn {
+            width: 18px;
+            height: 18px;
+            line-height: 18px;
+          }
+
+          .arco-btn-size-mini svg {
+            vertical-align: -1px;
+          }
+        }
+      }
+
+      .sw {
+        width: 96px;
+      }
+
+      .lw {
+        width: 264px;
+      }
+    }
+  }
+
+  .logic-line {
+    height: 48px;
+    line-height: 48px;
+  }
+
+  .empty-content {
+    margin-top: 84px;
+  }
+
+  :global {
+    .arco-select {
+      margin: 0 14px 0 0;
+    }
+  }
+
+  .mr16 {
+    margin-right: 16px;
+  }
+}

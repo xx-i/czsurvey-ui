@@ -1,8 +1,3 @@
-.designer-container {
-  padding: 16px;
-  background-image: url("../assets/bg.png");
-}
-
 .editor-side-container {
   position: fixed;
   top: 144px;
@@ -52,7 +47,7 @@
     margin-left: 5px;
   }
 
-  &:hover {
+  &:not(.disabled):hover {
     color: #0F6BFF;
     background-color: #F5F9FF;
   }
@@ -61,6 +56,45 @@
     .arco-icon {
       font-size: 16px;
       transform: translateY(1px);
+    }
+  }
+}
+
+.disabled.type-tags {
+  cursor: not-allowed;
+  background: rgb(247, 248, 250);
+  color: rgb(201, 205, 212);
+}
+
+.outline-tab {
+  padding: 12px 0;
+
+  .page-item {
+    margin-bottom: 24px;
+  }
+
+  .outline-item {
+    font-size: 14px;
+    line-height: 24px;
+    padding: 8px;
+    border-radius: 6px;
+    display: flex;
+    &:hover {
+      background: #f0f6ff;
+      color: #0f6bff;
+      cursor: default;
+    }
+    .item-icon {
+      margin-right: 8px;
+      font-size: 16px;
+    }
+    .ques-title-text {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      display: block;
+      flex-grow: 1;
+      overflow: hidden;
+      line-height: 24px
     }
   }
 }

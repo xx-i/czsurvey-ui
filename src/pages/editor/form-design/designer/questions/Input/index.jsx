@@ -1,5 +1,5 @@
 import QuesContentCard from "@/pages/editor/form-design/designer/QuesContentCard";
-import styles from '../style/formItem.module.less'
+import styles from './style/index.module.less'
 
 function Input({id}) {
   return (

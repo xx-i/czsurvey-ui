@@ -1,0 +1,66 @@
+.data-details-page {
+  padding: 16px 24px 16px 108px;
+}
+
+.stat-summary {
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.data-details-container {
+  background: #ffffff;
+  border-radius: 6px;
+  min-height: calc(100vh - 229px);
+  padding: 16px;
+  box-sizing: border-box;
+
+  .details-header {
+    .operate-btn-group {
+      padding-bottom: 20px;
+    }
+
+    :global {
+      .arco-input-group-addafter {
+        padding: 0;
+      }
+    }
+    .search-btn {
+      cursor: pointer;
+      padding: 0 16px;
+    }
+  }
+}
+
+.browse-survey-modal {
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  :global {
+    .arco-modal-header {
+      display: none;
+    }
+    .arco-modal-footer {
+      display: none;
+    }
+    .arco-modal-content {
+
+    }
+  }
+
+  .exit-btn {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    z-index: 30;
+  }
+}
+
+.operator-pop {
+  :global {
+    .arco-btn-primary {
+      margin-left: 8px;
+    }
+  }
+}

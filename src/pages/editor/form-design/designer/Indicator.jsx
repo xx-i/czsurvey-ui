@@ -8,7 +8,10 @@ function Indicator({id, type = 'indicator', className, style = {}, children}) {
     setNodeRef,
     transform,
     transition,
-  } = useSortable({id, data: {type}});
+  } = useSortable({
+    id,
+    data: {type},
+  });
 
   return (
     <div

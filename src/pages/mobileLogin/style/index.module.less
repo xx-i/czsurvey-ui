@@ -1,0 +1,99 @@
+.mobile-login {
+  height: 100vh;
+  background: rgba(237, 240, 245, 0.6);
+  padding: 18px 28px;
+  box-sizing: border-box;
+  position: relative;
+  min-height: 600px;
+  .header-logo {
+    .logo-inner {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      img {
+        width: 24px;
+        height: 24px;
+        margin-right: 4px;
+      }
+      span {
+        font-size: 18px;
+        font-weight: bold;
+        color: rgba(0, 0, 0, .68);
+      }
+    }
+  }
+  .login-title {
+    padding-top: 76px;
+    .title-content {
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+      color: rgba(0, 0, 0, .88);
+    }
+  }
+  .wx-login-content {
+    margin-top: 89px;
+    :global {
+      .arco-btn {
+        border-radius: 4px;
+      }
+    }
+    .wx-login-desc {
+      margin-top: 14px;
+      p {
+        color: #959595;
+        margin: 0 0 6px;
+      }
+    }
+  }
+  .account-login-content {
+    margin-top: 76px;
+
+    :global {
+      .arco-btn {
+        border-radius: 4px;
+      }
+      .arco-input-inner-wrapper {
+        border: 1px solid #dcdcdc;
+        background: #ffffff;
+        &:hover {
+          border-color: rgb(var(--primary-6));
+        }
+        &:focus {
+          box-shadow: 0 0 0 2px #d6e7ff;
+        }
+        &.arco-input-inner-wrapper-focus {
+          box-shadow: 0 0 0 2px #d6e7ff;
+        }
+      }
+      .arco-form-item-status-error .arco-input-inner-wrapper:not(.arco-input-inner-wrapper-disabled) {
+        background-color: var(--color-danger-light-1);
+      }
+    }
+  }
+  .login-bottom {
+    display: flex;
+    position: absolute;
+    bottom: 24px;
+    left: 0;
+    width: 100%;
+    justify-content: space-around;
+    padding: 30px;
+    box-sizing: border-box;
+
+    .login-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #00b42a;
+      color: #ffffff;
+      font-size: 32px;
+      line-height: 48px;
+      text-align: center;
+    }
+
+    .login-icon.account-icon {
+      background: #0F6BFF;
+    }
+  }
+}

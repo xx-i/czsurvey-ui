@@ -2,28 +2,54 @@ import { IconLeft, IconMore, IconMoreVertical, IconRight } from "@arco-design/we
 import styles from './style/index.module.less'
 import classNames from "classnames";
 import { Menu, Popover } from "@arco-design/web-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Scrollbar } from 'react-scrollbars-custom';
+
+const getActiveIndex = (pageKeys, activeKey) => {
+  const keyIndex = pageKeys.indexOf(activeKey);
+  return keyIndex !== -1 ? keyIndex : 0;
+}
 
 function Pagination(
   {
     className,
-    pageKeys = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't'],
-    renderPopover = () => (<></>),
-    activeKey = 'a',
-    onChangeActive = () => {}
+    pageKeys,
+    renderPopover,
+    activeKey,
+    onChangeActive,
+    children
   }
 ) {
 
-  const keyIndex = pageKeys.indexOf(activeKey);
-  const [activeIndex, setActiveIndex] = useState(keyIndex !== -1 ? keyIndex : 0);
+  const [activeIndex, setActiveIndex] = useState(getActiveIndex(pageKeys, activeKey));
   const [popupVisible, setPropuVisble] = useState(false);
+  const [activeMoreBtn, setActiveMorBtn] = useState(null);
+
+  useEffect(() => {
+    setActiveIndex(getActiveIndex(pageKeys, activeKey));
+  }, [pageKeys, activeKey]);
 
   const handleTurnPage = (index) => {
     setActiveIndex(index);
     setPropuVisble(false);
-    onChangeActive(index);
+    onChangeActive && onChangeActive(index);
   };
+
+  const handleMoreBtnPopVisibleChange = (index) => {
+    return (visible) => {
+      if (visible) {
+        setActiveMorBtn(index)
+      } else if (index === activeMoreBtn) {
+        setActiveMorBtn(null);
+      }
+    }
+  };
+
+  const getMoreBtnPopoverContent = (index) => (
+    <div onClick={() => setActiveMorBtn(null)}>
+      {renderPopover && renderPopover(index)}
+    </div>
+  );
 
   const PageButton = ({index}) => {
     return (
@@ -32,6 +58,7 @@ function Pagination(
           classNames(
             styles['page-button'],
             activeIndex === index && styles['active'],
+            activeMoreBtn === index && styles['active-more-btn'],
             className
           )
         }
@@ -42,7 +69,14 @@ function Pagination(
         >
           {index + 1}
         </button>
-        <Popover className={styles['page-pop']} position='bottom' trigger='click' content={renderPopover(index)}>
+        <Popover
+          className={styles['page-pop']}
+          position='bottom'
+          trigger='click'
+          popupVisible={activeMoreBtn === index}
+          onVisibleChange={handleMoreBtnPopVisibleChange(index)}
+          content={getMoreBtnPopoverContent(index)}
+        >
           <button className={styles['more-btn']}>
             <IconMoreVertical />
           </button>
@@ -104,19 +138,32 @@ function Pagination(
     }
   }
 
+  const handleClickNextPage = (step) => {
+    const nextPage = activeIndex + step;
+    setActiveIndex(nextPage);
+    onChangeActive(nextPage);
+  }
+
   return (
     <div className={styles['pagination']}>
       <div className={classNames(styles['page-turner'], styles['pre-btn'])}>
-        <button disabled={activeIndex <= 0} onClick={() => setActiveIndex((prevState) => prevState - 1)}>
+        <button
+          disabled={activeIndex <= 0}
+          onClick={() => handleClickNextPage(-1)}
+        >
           <IconLeft />
         </button>
       </div>
       {renderPageButtons()}
       <div className={styles['page-turner']}>
-        <button disabled={activeIndex >= pageKeys.length - 1} onClick={() => setActiveIndex((prevState) => prevState + 1)}>
+        <button
+          disabled={activeIndex >= pageKeys.length - 1}
+          onClick={() => handleClickNextPage(1)}
+        >
           <IconRight />
         </button>
       </div>
+      {children}
     </div>
   );
 }
