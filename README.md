@@ -6,7 +6,7 @@
 
 演示地址: [http://czsurvey.mzgx.net](http://czsurvey.mzgx.net) (暂时先用这个地址，后续会换)
 
-**这个是前端的仓库，后端的仓库请 [点击这里](https://gitee.com/xx-i/czsurvey)**
+**这个是前端的仓库，后端的仓库请 [点击这里](https://github.com/xx-i/czsurvey)**
 
 #### 后端使用到的技术：
 > Spring Boot  
