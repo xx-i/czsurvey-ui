@@ -4,7 +4,9 @@
 
 当然，此系统无论从各个方面，都与腾讯问卷还有很大差距，如果大家有问卷系统的需求，并且有条件的话，还是更推荐大家使用腾讯问卷👍👍👍。
 
-演示地址: [http://czsurvey.mzgx.net](http://czsurvey.mzgx.net)(暂时先用这个地址，后续会换)
+演示地址: [http://czsurvey.mzgx.net](http://czsurvey.mzgx.net) (暂时先用这个地址，后续会换)
+
+**这个是前端的仓库，后端的仓库请 [点击这里](https://gitee.com/xx-i/czsurvey-ui)**
 
 #### 后端使用到的技术：
 > Spring Boot  
@@ -20,7 +22,7 @@
 > jdk17  
 > gradle  
 > redis  
-> mysql8以上版本（必须，用到了jsonTable）
+> mysql8以上版本
 
 
 这个项目的前端和后端都还没做完，如果演示过程中遇到点不动的按钮，那就说明这个功能还没做😂
