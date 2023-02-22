@@ -65,6 +65,10 @@ function EditorLayout() {
     // eslint-disable-next-line
   }, [surveyId]);
 
+  useEffect(() => {
+    setPreviewSurvey({isPreview: false, type: 'DESKTOP'});
+  }, [navigate]);
+
   const onChangeStatus = () => {
     const status = survey.status;
     const newStatus = status === 'PUBLISH' ? 'CLOSE' : 'PUBLISH';
